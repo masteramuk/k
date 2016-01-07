@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 K Team. All Rights Reserved.
+// Copyright (c) 2014-2016 K Team. All Rights Reserved.
 
 /*!
 \setlength{\parindent}{1em}
@@ -137,7 +137,7 @@ of statements surrounded by curly brackets.  */
                  | "halt" ";"
                  > "join" AExp ";"            [strict]
 
-  syntax Ids   ::= List{Id,","}               [strict]
+  syntax Ids   ::= List{Id,","}               [strict, klabel(ids)]
   syntax AExps ::= List{AExp,","}             [strict]
   syntax Stmts ::= List{Stmt,""}
 endmodule
@@ -182,7 +182,7 @@ buffers as lists of items. */
                       <id color="black"> 0 </id>
                     </thread>
                   </threads>
-                  <br/>
+//                <br/>
                   <store color="red"> .Map </store>
 //                  <in color="magenta"> .List </in>
 //                  <out color="Orchid"> .List </out>
@@ -397,6 +397,9 @@ count as a computational step. */
 
   syntax Printable ::= Int | String
   syntax AExp ::= Printable
+  syntax Printables ::= List{Printable,","}
+  syntax KResult ::= Printables
+
   rule <k> print(P:Printable,AEs => AEs); ...</k>
        <out>... .List => ListItem(P) </out>  [print]
   rule print(.AExps); => .  [structural]
@@ -444,7 +447,7 @@ with the declared configuration cell multiplicity.  The unique identifier
 of the new thread is generated using the ``fresh'' side condition. */
 
   rule <k> spawn S => !T:Int ...</k> <env> Rho </env>
-       (. => <thread>... <k> S </k> <env> Rho </env> <id> !T </id> ...</thread>)
+       (.Bag => <thread>... <k> S </k> <env> Rho </env> <id> !T </id> ...</thread>)
 
 /*@ \subsubsection{Join thread}
 A thread who wants to join another thread \texttt{T} has to wait until
