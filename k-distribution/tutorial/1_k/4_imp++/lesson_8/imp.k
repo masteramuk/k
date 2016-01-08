@@ -133,12 +133,12 @@ of statements surrounded by curly brackets.  */
                    Block "else" Block         [strict(1)]
                  | "while" "(" BExp ")" Block
                  | "int" Ids ";"
-                 | "print" "(" AExps ")" ";"  [strict]
+                 | "print" "(" AExps ")" ";"
                  | "halt" ";"
                  > "join" AExp ";"            [strict]
 
   syntax Ids   ::= List{Id,","}               [strict, klabel(ids)]
-  syntax AExps ::= List{AExp,","}             [strict]
+  syntax AExps ::= List{AExp,","}
   syntax Stmts ::= List{Stmt,""}
 endmodule
 
@@ -397,8 +397,8 @@ count as a computational step. */
 
   syntax Printable ::= Int | String
   syntax AExp ::= Printable
-  syntax Printables ::= List{Printable,","}
-  syntax KResult ::= Printables
+
+  context print(HOLE:AExp, AEs:AExps);
 
   rule <k> print(P:Printable,AEs => AEs); ...</k>
        <out>... .List => ListItem(P) </out>  [print]
